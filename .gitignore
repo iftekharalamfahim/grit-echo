@@ -1,0 +1,6 @@
+.venv/
+CAMUS_dataset/
+upload_v1/
+*.zip
+__pycache__/
+.idea
