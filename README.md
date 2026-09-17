@@ -22,6 +22,7 @@
 - [Pipeline Architecture](#pipeline-architecture)
 - [Repository Structure](#repository-structure)
 - [Environment & System Requirements](#environment--system-requirements)
+- [Results](#results)
 - [Reproduction Steps](#reproduction-steps)
 - [Roadmap & Progress](#roadmap--progress)
 - [Dataset & Mandatory Citation](#dataset--mandatory-citation)
@@ -74,6 +75,38 @@ grit-echo/
 | **Frameworks** | PyTorch 2.x, Torchvision, Gymnasium |
 | **Medical IO** | `nibabel`, `SimpleITK`, `opencv-python` |
 | **Execution Context** | Kaggle Notebooks (NVIDIA T4 ×2) / Local CUDA GPU |
+
+---
+## Results
+
+All numbers below are reproducible from the cited Kaggle notebook version;
+the test split (50 patients) remains untouched until final evaluation.
+
+### Clinical endpoint certification — Simpson LVEF vs. expert reference
+*Source: notebook version `stage1-lvef-endpoint`, validation split (n = 50).*
+
+| Estimator | MAE (EF points) | Bias | Pearson r |
+|---|---|---|---|
+| Biplane (ASE 2015) | 7.67 | +7.67 | 0.97 |
+| Single-plane 2CH | 10.59 | +10.59 | 0.92 |
+| Single-plane 4CH | 6.93 | +3.74 | 0.84 |
+
+The geometric estimator systematically overestimates the clinical reference
+EF (stored as rounded integers) — a known offset of 2D method-of-disks versus
+vendor/consensus references. All downstream EF comparisons are therefore
+mask-to-mask under this fixed estimator, so the offset cancels by construction.
+
+### Cohort (CAMUS, ED/ES frames)
+*Source: notebook version `stage0-cohort-audit-and-loaders`.*
+
+| Property | Value |
+|---|---|
+| Patients / frames | 500 / 2,000 |
+| Official splits (train / val / test) | 400 / 50 / 50, pairwise disjoint, full coverage |
+| In-plane spacing | 0.308 mm isotropic |
+| Label vocabulary | 0 background, 1 LV cavity, 2 myocardium, 3 left atrium |
+| Image quality, 2CH (Good / Medium / Poor) | 217 / 214 / 69 |
+| Image quality, 4CH (Good / Medium / Poor) | 288 / 165 / 47 |
 
 ---
 
