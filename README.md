@@ -4,7 +4,6 @@
 
 **GR**anular **I**nformation & **R**einforcement **T**racking in **Echo**cardiography
 
-[![Stage 1 - In Progress](https://img.shields.io/badge/Stage%201-In%20Progress-yellow.svg)](#roadmap--progress)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
 [![PyTorch 2.x](https://img.shields.io/badge/PyTorch-2.x-red.svg)](https://pytorch.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](LICENSE)
@@ -125,14 +124,15 @@ mask-to-mask under this fixed estimator, so the offset cancels by construction.
 |---|---|---|
 | 1 LV cavity | 0.934 ± 0.034 | 3.83 ± 1.81 |
 | 2 Myocardium | 0.874 ± 0.039 | 3.96 ± 1.68 |
-| 3 Left atrium | 0.916 ± 0.053 | 4.14 ± 3.06 |
+| 3 Left atrium | 0.916 ± 0.053 | 4.14 ± 3.06 |  
+  
 
 | Endpoint comparison | MAE (EF pts) | Bias | Pearson r |
 |---|---|---|---|
 | Predicted masks vs expert masks | 4.76 | -1.78 | 0.875 |
-| Predicted masks vs clinical reference | 7.64 | +5.78 | 0.856 |
-
-Reproducibility: two full retrainings on separate sessions yielded val
+| Predicted masks vs clinical reference | 7.64 | +5.78 | 0.856 |  
+  
+*Reproducibility*: two full retrainings on separate sessions yielded val
 foreground Dice 0.9125 and 0.9131 (delta 0.0006); all test numbers above
 come from the second, archived checkpoint. Default border-fill artifact
 under albumentations 2.x logged as a Stage 2 retraining item.
