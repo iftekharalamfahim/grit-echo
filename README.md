@@ -135,7 +135,22 @@ mask-to-mask under this fixed estimator, so the offset cancels by construction.
 *Reproducibility*: two full retrainings on separate sessions yielded val
 foreground Dice 0.9125 and 0.9131 (delta 0.0006); all test numbers above
 come from the second, archived checkpoint. Default border-fill artifact
-under albumentations 2.x logged as a Stage 2 retraining item.
+under albumentations 2.x logged as a Stage 2 retraining item.  
+
+### Granular uncertainty signal — frame-wise predictive entropy (Stage 2)
+*Source: notebook version `stage2-entropy-signal`; test split (50 patients, 1,968 frames).*
+
+| Image quality | Global entropy (mean ± std) | Tissue entropy (mean ± std) |
+|---|---|---|
+| Good | 0.0378 ± 0.0052 | 0.0803 ± 0.0088 |
+| Medium | 0.0386 ± 0.0049 | 0.0852 ± 0.0096 |
+| Poor | 0.0408 ± 0.0076 | 0.0893 ± 0.0092 |
+
+Normalized Shannon entropy (bits, divided by log2 4) of the softmax map per
+frame across the 18–20 frame half-sequences; tissue entropy averages over
+foreground pixels only, removing background dilution. The monotonic rise with
+quality degradation is the descriptive basis of RQ1; inferential statistics
+and frozen granule cutpoints follow in Sections 9–10.
 ---
 
 ## Reproduction Steps
@@ -146,7 +161,9 @@ under albumentations 2.x logged as a Stage 2 retraining item.
    pip install nibabel numpy matplotlib opencv-python
    python audit.py
    ```
-3. **Dataset Packing:** Run `python make_pack.py` to generate the compressed ED/ES pack (~300 MB) for private Kaggle execution.
+3. **Dataset Packing:** 
+    - **Stage 1 sequences:** Run `python make_pack.py` to generate the compressed ED/ES pack (~300 MB) for private Kaggle execution.
+    - **Stage 2 sequences:** run `python make_seq_pack.py` (1,000 half-sequence volumes, ~3.4 GB) and upload the zip as the private Kaggle dataset `camus-half-sequences`.
 4. **Experimental Runs:** Execute via the Kaggle Driver (`NVIDIA T4 ×2`, `SEED=42`).
 
 ---
