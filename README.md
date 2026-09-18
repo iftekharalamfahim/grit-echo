@@ -108,6 +108,16 @@ mask-to-mask under this fixed estimator, so the offset cancels by construction.
 | Image quality, 2CH (Good / Medium / Poor) | 217 / 214 / 69 |
 | Image quality, 4CH (Good / Medium / Poor) | 288 / 165 / 47 |
 
+### Segmentation baseline — U-Net (ResNet-34), validation split
+*Source: notebook version `stage1-unet-trained`; validation split (50 patients, 200 frames).*
+
+| Metric | Value |
+|---|---|
+| Foreground macro Dice (classes 1–3), selected checkpoint | 0.9125 (epoch 20/20) |
+| Final train / val loss | 0.1210 / 0.1781 |
+| Architecture | U-Net, ResNet-34 ImageNet encoder, 4-class output |
+| Loss / optimizer | multiclass Dice (from logits) + CE; AdamW 2e-4, cosine schedule |
+
 ---
 
 ## Reproduction Steps
