@@ -113,11 +113,29 @@ mask-to-mask under this fixed estimator, so the offset cancels by construction.
 
 | Metric | Value |
 |---|---|
-| Foreground macro Dice (classes 1–3), selected checkpoint | 0.9125 (epoch 20/20) |
-| Final train / val loss | 0.1210 / 0.1781 |
+| Foreground macro Dice (classes 1–3), selected checkpoint | 0.9131 (epoch 20/20) |
+| Final train / val loss | 0.1215 / 0.1752 |
 | Architecture | U-Net, ResNet-34 ImageNet encoder, 4-class output |
 | Loss / optimizer | multiclass Dice (from logits) + CE; AdamW 2e-4, cosine schedule |
 
+### Isolated test evaluation — single pass, n = 50 patients (200 frames)
+*Source: notebook version `stage1-unet-baseline`; weights archived in that version's output.*
+
+| Class | Dice (mean ± std) | HD95 mm (mean ± std) |
+|---|---|---|
+| 1 LV cavity | 0.934 ± 0.034 | 3.83 ± 1.81 |
+| 2 Myocardium | 0.874 ± 0.039 | 3.96 ± 1.68 |
+| 3 Left atrium | 0.916 ± 0.053 | 4.14 ± 3.06 |
+
+| Endpoint comparison | MAE (EF pts) | Bias | Pearson r |
+|---|---|---|---|
+| Predicted masks vs expert masks | 4.76 | -1.78 | 0.875 |
+| Predicted masks vs clinical reference | 7.64 | +5.78 | 0.856 |
+
+Reproducibility: two full retrainings on separate sessions yielded val
+foreground Dice 0.9125 and 0.9131 (delta 0.0006); all test numbers above
+come from the second, archived checkpoint. Default border-fill artifact
+under albumentations 2.x logged as a Stage 2 retraining item.
 ---
 
 ## Reproduction Steps
